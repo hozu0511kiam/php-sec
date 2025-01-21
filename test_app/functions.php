@@ -3,28 +3,30 @@
 
 require_once('connection.php');
 //connection.phpのDB操作をPOSTされた際にデータを渡すための記述
-session_start();
+session_start();//SESSION を使用する
 
-function e($text)
+function e($text)//XSS エスケープ処理 htmlspecialchars()
 {
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
 
-function setToken()
+function setToken()//CSRF SESSIONにtokenを格納する
 {
     $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(16));
+    //ランダムな16文字のバイト文字列を生成し、変換
+    //生成された値を $_SESSION['token'] に格納
 }
 
-// SESSIONに格納されたtokenのチェックを行い、SESSIONにエラー文を格納する
-function checkToken($token)
+function checkToken($token)//サーバ側とクライアント側のtokenが同じか
 {
     if (empty($_SESSION['token']) || ($_SESSION['token'] !== $token)) {
         $_SESSION['err'] = '不正な操作です';
         redirectToPostedPage();
+        // SESSIONに格納されたtokenのチェック、SESSIONにエラー文を格納する
     }
 }
 
-function unsetError()
+function unsetError()//err時にブラウザにエラーメッセージを表示させない
 {
     $_SESSION['err'] = '';
 }
@@ -58,7 +60,7 @@ function getSelectedTodo($id)
 function savePostedData($post)
 {
     checkToken($post['token']);
-    validate($post);
+    validate($post);//バリデーション 入力必須項目の指定
     $path = getRefererPath();
     switch ($path) {
     //条件分岐をして処理を振り分け

@@ -31,11 +31,11 @@ function createTodoData($todoText)
 {
     $dbh = connectPdo();
     //DBへ接続する connectPdo関数 を呼びだし、返り値を $dbh に格納
-    $sql = 'INSERT INTO todos (content) VALUES (:todoText)';
+    $sql = 'INSERT INTO todos (content) VALUES (:todoText)';// :todoText→プレースホルダー
     //実行したいSQL文 を作成し、$sql に格納
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(':todoText', $todoText, PDO::PARAM_STR);
-    $stmt->execute();
+    $stmt = $dbh->prepare($sql);//prepare()でSQL文を実行する準備
+    $stmt->bindValue(':todoText', $todoText, PDO::PARAM_STR);//bindValue()でプレースホルダに値をセット
+    $stmt->execute();//実行
 }
 
 //データ取得処理 登録したデータをDBから全件取得する
@@ -55,10 +55,10 @@ function updateTodoData($post)
     //connectPdo関数を呼びだし、返り値を $dbh に格納
     //DBとのやりとり
     $sql = 'UPDATE todos SET content = :todoText WHERE id = :id';
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(':todoText', $post['content'], PDO::PARAM_STR);
-    $stmt->bindValue(':id', (int) $post['id'], PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt = $dbh->prepare($sql);//prepare()でSQL文を実行する準備
+    $stmt->bindValue(':todoText', $post['content'], PDO::PARAM_STR);//bindValue()でプレースホルダに値をセット
+    $stmt->bindValue(':id', (int) $post['id'], PDO::PARAM_INT);//bindValue()でプレースホルダに値をセット
+    $stmt->execute();//実行
 }
 
 function getTodoTextById($id)
@@ -67,9 +67,9 @@ function getTodoTextById($id)
     //connectPdo関数 を呼びだし、返り値を $dbh に格納
     //DBとのやりとり
     $sql = 'SELECT * FROM todos WHERE deleted_at IS NULL AND id = :id';
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt = $dbh->prepare($sql);//prepare()でSQL文を実行する準備
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);//bindValue()でプレースホルダに値をセット
+    $stmt->execute();//実行
     $todo = $stmt->fetch();
     return $todo['content'];
     //変数$sqlにSQL文（文字列）を代入してfetch関数に$data['content']を返す
@@ -86,10 +86,10 @@ function deleteTodoData($id)
     //変数$nowにdate関数を代入
     //現在時刻をdate関数で定義
     $sql = 'UPDATE todos SET deleted_at = :now WHERE id = :id' ;
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(':now', $now, PDO::PARAM_INT);
-    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt = $dbh->prepare($sql);//prepare()でSQL文を実行する準備
+    $stmt->bindValue(':now', $now, PDO::PARAM_INT);//bindValue()でプレースホルダに値をセット
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);//bindValue()でプレースホルダに値をセット
+    $stmt->execute();//実行
     //echo $sql;
 }
 

@@ -1,8 +1,7 @@
 <?php
-require_once('functions.php');
-header('Set-Cookie: userId=123');
+require_once('functions.php');////functions.phpの関数を呼び出すことが可能
+header('Set-Cookie: userId=123');//userIdを生成
 setToken();
-////functions.phpの関数を呼び出すことが可能
 ?>
 
 <!DOCTYPE html>
